@@ -1,6 +1,6 @@
 import React from "react";
 import { FaStar } from "react-icons/fa"
-
+import { motion } from "framer-motion";
 
 
   // ... (your existing data array)
@@ -72,7 +72,7 @@ const Products = () => {
           </p>
         </div>
         {/* Body section */}
-        <div>
+        <motion.div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 place-items-center">
             {/* card section */}
             {ProductsData.map((product) => (
@@ -96,7 +96,7 @@ const Products = () => {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
