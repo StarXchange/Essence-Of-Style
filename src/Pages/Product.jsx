@@ -2,7 +2,9 @@ import React from 'react'
 
 const Product = () => {
   return (
-    <div>Product</div>
+    <div>
+      {/* Make research about mirrors and windows category */}
+    </div>
   )
 }
 

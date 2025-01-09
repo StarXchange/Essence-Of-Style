@@ -28,7 +28,7 @@ const App = () => {
 
       </Routes>
 
-      <Footer /> 
+      {/* <Footer />  */}
        {/* Don't forget to make adjustment to the forever at the copyright part */}
     </div>
   )

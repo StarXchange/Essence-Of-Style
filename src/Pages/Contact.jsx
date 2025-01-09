@@ -1,6 +1,7 @@
 import React from 'react'
 import Title from '../components/Title/Title'
 import image3 from '../assets/image3.jpg'
+import NewsletterBox from '../components/NewletterBox/NewsletterBox'
 
 const contact = () => {
   return (
@@ -21,7 +22,8 @@ const contact = () => {
                 <button className='border border-black px-8 py-4 text-sm hover:bg-black hover:text-white transition-all-duration-500'>Explore Jobs</button>
             </div>
       </div>
-
+    
+    <NewsletterBox />
 
     </div>
   )
