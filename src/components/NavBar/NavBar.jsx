@@ -31,7 +31,7 @@ const NavBar = () => {
         </li>
         <li class="mx-4 my-6 md:my-0 ">
           <NavLink
-            to="/collections"
+            to="/product"
             className="flex flex-col items-center gap-1 hover:text-cyan-500"
           >
             <p>PRODUCT</p>
@@ -61,10 +61,10 @@ const NavBar = () => {
         <img src={search} className="w-5 cursor-pointer" />
         <div className="group relative">
           <img src={user} className="w-5 cursor-pointer" />
-          <div className="group-hover:block hidden absolute dropdown-menu right-0 pt-4 bg-gray-300">
-            <div className="flex flex=ool gap-2 w-36 py-3 px-5">
+          <div className="group-hover:block hidden absolute dropdown-menu right-0 pt-4 ">
+            <div className="flex flex=ool gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded">
               <ul>
-                <li className="cursor-pointer hover:text-gray-700">Profile</li>
+                <li className="cursor-pointer hover:text-gray-700">My Profile</li>
                 <li className="cursor-pointer hover:text-gray-700">Orders</li>
                 <li className="cursor-pointer hover:text-gray-700">Log out</li>
               </ul>
@@ -99,10 +99,10 @@ const NavBar = () => {
             <img className="h-4 rotate-180" src={dropdown} alt="" />
             <p>Back</p>
           </div>
-          <NavLink to='/'>HOME</NavLink>
-          <NavLink to='/about'>ABOUT</NavLink>
-          <NavLink to='/collections'>COLLECTIONS</NavLink>
-          <NavLink to='/contact'>CONTACT</NavLink>
+          <NavLink className='py-2 pl-6 border'to='/'>HOME</NavLink>
+          <NavLink className='py-2 pl-6 border'to='/about'>ABOUT</NavLink>
+          <NavLink className='py-2 pl-6 border'to='/product'>PRODUCT</NavLink>
+          <NavLink className='py-2 pl-6 border'to='/contact'>CONTACT</NavLink>
         </div>
       </div>
     </div>

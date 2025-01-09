@@ -1,18 +1,12 @@
-import React from "react";
-// import Hero from "../components/Hero/Hero"; 
-import Products from "../components/Products/Products";
-import Register from "../components/Register/Register";
+import React from 'react'
+import Hero from '../components/Hero/Hero'
 
+const Home = () => {
+  return (
+    <div>
+      <Hero/>
+    </div>
+  )
+}
 
-function Home() {
-    return (
-      <div className="App">
-        
-        {/* <Hero /> */}
-        <Products />
-        <Register />
-      </div>
-    );
-  }
-  
-  export default Home;
+export default Home
