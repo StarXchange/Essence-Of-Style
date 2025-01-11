@@ -1,7 +1,7 @@
 import React from 'react'
-import Title from '../components/Title/Title'
+import Title from '../components/Title'
 import image3 from '../assets/image3.jpg'
-import NewsletterBox from '../components/NewletterBox/NewsletterBox'
+import NewsletterBox from '../components/NewsletterBox'
 
 const contact = () => {
   return (

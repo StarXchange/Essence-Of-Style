@@ -1,15 +1,23 @@
-import React from 'react'
-import Hero from '../components/Hero/Hero'
+import React from "react";
+import "../App.css";
+import Hero from "../components/Hero"; 
+import LatestCollection from '../components/LatestCollection';
+import BestSeller from "../components/BestSeller";
+import OurPolicy from "../components/OurPolicy";
+import NewsletterBox from '../components/NewsletterBox';
 
-const Home = () => {
-  return (
-    <div>
-      <Hero/>
-    </div>
-  )
-}
-
-export default Home
-
-// message for Sam.... please before you do anything message me in order to prevent contradictions 
-// And before you do anything please watch the video on YouTube
+function Home() {
+    return (
+      <div className="App">
+        
+        <Hero /> 
+        <LatestCollection  />
+        <BestSeller/>
+        <OurPolicy />
+        <NewsletterBox />
+        {/* <Products /> */}
+      </div>
+    );
+  }
+  
+  export default Home;

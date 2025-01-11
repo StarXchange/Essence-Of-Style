@@ -1,9 +1,9 @@
 import React from 'react'
-import Logo from '../../assets/Logo.png'
+import Logo from '../assets/Logo.png'
 
 const Footer = () => {
   return (
-    <div>
+    <div className='bg-gray-800 text-white'>
         <div className='flex flex-col sm:grid grid-cols-[3fr_1fr_1fr] gap-14 my-10 mt-40 text-sm'>
             
             <div>
