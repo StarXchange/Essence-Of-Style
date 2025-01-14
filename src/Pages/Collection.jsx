@@ -1,8 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 import dropdown from "../assets/dropdown-icon.png";
 import Title from "../components/Title";
-import ProductItem from "../components/ProductItem"; // Ensure this is correctly imported
+import ProductItem from "../components/ProductItem";
 
 const Collection = () => {
   const { products, search, showSearch } = useContext(ShopContext);
@@ -10,93 +11,53 @@ const Collection = () => {
   const [filterProducts, setFilterProducts] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [sortOption, setSortOption] = useState("relevant");
+  const navigate = useNavigate();
 
-
-
+  // Apply filters and sorting
   const applyFilter = () => {
-    let productsCopy = products.slice();
+    let productsCopy = [...products];
 
-    if(showSearch && search) {
-        productsCopy = productsCopy.filter(item => item.name.toLowerCase().includes(search.toLowerCase())
-    )
+    if (showSearch && search) {
+      productsCopy = productsCopy.filter((item) =>
+        item.name.toLowerCase().includes(search.toLowerCase())
+      );
     }
+
     if (selectedCategories.length > 0) {
       productsCopy = productsCopy.filter((item) =>
         selectedCategories.includes(item.category)
       );
     }
+
+    if (sortOption === "low-high") {
+      productsCopy.sort((a, b) => a.price - b.price);
+    } else if (sortOption === "high-low") {
+      productsCopy.sort((a, b) => b.price - a.price);
+    }
+
     setFilterProducts(productsCopy);
   };
 
-
-
-
+  // Apply filter on dependency changes
   useEffect(() => {
     applyFilter();
-  }, [selectedCategories, products, search, showSearch]);
+  }, [selectedCategories, products, search, showSearch, sortOption]);
 
+  // Toggle category selection
+  const toggleCategory = (category) =>
+    setSelectedCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((cat) => cat !== category)
+        : [...prev, category]
+    );
 
-
-  // Initialize filterProducts when products update
-  useEffect(() => {
-    setFilterProducts(products);
-  }, [products]);
-
-
-
-  // Log the selected categories for debugging
-  useEffect(() => {
-    console.log(selectedCategories);
-  }, [selectedCategories]);
-
-
-
-  // Handle category toggle
-  const toggleCategory = (category) => {
-    setSelectedCategories((prevCategories) => {
-      if (prevCategories.includes(category)) {
-        return prevCategories.filter((cat) => cat !== category);
-      } else {
-        return [...prevCategories, category];
-      }
-    });
-  };
-
-
-
-  // Filter products based on selected categories
-  useEffect(() => {
-    if (selectedCategories.length > 0) {
-      const filtered = products.filter((product) =>
-        selectedCategories.includes(product.category)
-      );
-      setFilterProducts(filtered);
-    } else {
-      setFilterProducts(products);
+    const singlePage = (productId) => {
+      console.log("productId",productId);
+      navigate(`/product/${productId}`);
     }
-  }, [selectedCategories, products]);
-
-
-  // Handle sorting
-  const handleSortChange = (e) => {
-    const value = e.target.value;
-    setSortOption(value);
-
-    const sorted = [...filterProducts];
-    if (value === "low-high") {
-      sorted.sort((a, b) => a.price - b.price);
-    } else if (value === "high-low") {
-      sorted.sort((a, b) => b.price - a.price);
-    }
-    setFilterProducts(sorted);
-  };
-
-
 
   return (
     <div className="flex flex-col sm:flex-row gap-1 sm:gap-10 pt-10 border-t">
-
-
       {/* Filter Options */}
       <div className="min-w-60">
         <p
@@ -111,8 +72,6 @@ const Collection = () => {
           />
         </p>
 
-
-
         {/* Category Filter */}
         <div
           className={`border border-gray-300 pl-5 py-3 mt-6 ${
@@ -121,41 +80,29 @@ const Collection = () => {
         >
           <p className="mb-3 text-sm font-medium">CATEGORIES</p>
           <div className="flex flex-col gap-2 text-sm font-light text-gray-700">
-            <p className="flex gap-2">
-              <input
-                className="w-3"
-                type="checkbox"
-                value="Indoor Decorations"
-                onChange={() => toggleCategory("Indoor Decorations")}
-              />
-              Indoor Decorations
-            </p>
-            <p className="flex gap-2">
-              <input
-                className="w-3"
-                type="checkbox"
-                value="Outdoor Decorations"
-                onChange={() => toggleCategory("Outdoor Decorations")}
-              />
-              Outdoor Decorations
-            </p>
+            {["Indoor Decorations", "Outdoor Decorations"].map((category) => (
+              <p key={category} className="flex gap-2">
+                <input
+                  className="w-3"
+                  type="checkbox"
+                  value={category}
+                  onChange={() => toggleCategory(category)}
+                />
+                {category}
+              </p>
+            ))}
           </div>
         </div>
       </div>
 
-
-
-      {/* Right Side */}
+      {/* Product List */}
       <div className="flex-1">
         <div className="flex justify-between text-base sm:text-2xl mb-4">
           <Title text1={"ALL"} text2={"COLLECTIONS"} />
-
-
-          {/* Product Sort */}
           <select
             className="border-2 border-gray-300 text-sm px-2"
             value={sortOption}
-            onChange={handleSortChange}
+            onChange={(e) => setSortOption(e.target.value)}
           >
             <option value="relevant">Sort by: Relevant</option>
             <option value="low-high">Sort by: Low to High</option>
@@ -163,16 +110,16 @@ const Collection = () => {
           </select>
         </div>
 
-
         {/* Map Products */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6">
-          {filterProducts.map((product, index) => (
+          {filterProducts.map((product) => (
             <ProductItem
-              key={index}
+              key={product.id}
               name={product.name}
               id={product.id}
               price={product.price}
-              image={[product.imageUrl]}
+              image={[product.imageUrl]} // Wrap imageUrl in an array product.imageUrl}
+              func={() => singlePage(product.id) }
             />
           ))}
         </div>

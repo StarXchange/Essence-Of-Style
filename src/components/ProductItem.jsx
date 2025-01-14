@@ -3,12 +3,12 @@ import { ShopContext } from "../context/ShopContext";
 import { Link } from "react-router-dom";
 // import products from "../products";
 
-const ProductItem = ({ id, image, name, price }) => {
+const ProductItem = ({ id, image, name, price, func }) => {
   const { currency } = useContext(ShopContext);
 
   return (
-    <Link className="text-gray-700 cursor-pointer" to={`/product/${id}`}>
-      <div className="hover:scale-110 transition ease-in-out">
+    
+      <div className="hover:scale-110 transition ease-in-out" onClick={func}>
         <div className="overflow-hidden">
           {image && image.length > 0 ? (
             <img
@@ -28,7 +28,6 @@ const ProductItem = ({ id, image, name, price }) => {
           {price?.toFixed(2) || "0.00"}
         </p>
       </div>
-    </Link>
   );
 };
 

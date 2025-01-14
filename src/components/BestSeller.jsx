@@ -2,10 +2,12 @@ import React, { useContext, useState, useEffect } from "react";
 import { ShopContext } from "../context/ShopContext";
 import Title from "./Title";
 import ProductItem from "./ProductItem";
+import { useNavigate } from "react-router-dom";
 
 const BestSeller = () => {
   const { products } = useContext(ShopContext);
   const [bestSeller, setBestSeller] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log("Products from context:", products); // Debugging
@@ -15,6 +17,9 @@ const BestSeller = () => {
     }
   }, [products]); // Update when products changes
 
+  const singlePage = (productId) => {
+    navigate(`/product/${productId}`);
+  }
   return (
     <div className="my-10">
       <div className="text-center text-3xl py-8">
@@ -37,6 +42,7 @@ const BestSeller = () => {
               name={products.name}
               price={products.price}
               image={[products.imageUrl]}
+              func={() => singlePage(products.id)}
             />
           ))
         )}

@@ -7,3 +7,5 @@ const PlaceOrder = () => {
 }
 
 export default PlaceOrder
+
+//ABOUT TO ENTER THE PLACEHOLDER COMPONENT
