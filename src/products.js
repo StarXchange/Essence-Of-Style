@@ -7,9 +7,8 @@ const products = [
       price: 13.973,
       description:
         "Self-Adhesive Acrylic Mirrors, Irregular Shape, Horizontal Orientation, No Electricity Needed, Perfect for Wall.",
-      imageUrl: [
+      imageUrl: 
         "https://img.kwcdn.com/product/fancy/58fb1cfa-1453-496e-8fc5-5ae820954c0d.jpg?imageView2/2/w/800/q/70/format/webp",
-        "https://instagram.flos2-2.fna.fbcdn.net/v/t39.30808-6/470671561_18470753074037206_3936614394769135379_n.jpg?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi44ODF4MTA1NC5zZHIuZjMwODA4LmRlZmF1bHRfaW1hZ2UifQ&_nc_ht=instagram.flos2-2.fna.fbcdn.net&_nc_cat=110&_nc_ohc=_8BxkM9jLUQQ7kNvgGz8sPZ&_nc_gid=374c71dc875f42f884bdcaa2d38ee711&edm=APoiHPcAAAAA&ccb=7-5&ig_cache_key=MzQwMzE2MTI3ODU3MDI0Mzc1OQ%3D%3D.3-ccb7-5&oh=00_AYABV53JFWq573z5rgch-tM6RVzhUZnuD9YSzCntXI0Pow&oe=6789991D&_nc_sid=22de04"],
         bestseller: true,
     },
     {

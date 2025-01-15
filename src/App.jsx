@@ -9,7 +9,7 @@ import SearchBar from '../src/components/SearchBar'
 import Footer from './components/Footer'
 import Cart from './Pages/Cart'
 import PlaceOrder from './Pages/PlaceOrder'
-import Order from './Pages/Orders'
+import Order from './Pages/Order'
 import Collection from './Pages/Collection'
 import './App.css'
 import { ToastContainer, toast } from 'react-toastify';
@@ -25,7 +25,7 @@ const App = () => {
       <SearchBar />
       
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />

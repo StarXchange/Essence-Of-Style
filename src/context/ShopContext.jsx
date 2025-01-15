@@ -1,4 +1,5 @@
 import React, { createContext, useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import the useNavigate hook
 import products from "../products";
 
 // Create a context for the shop
@@ -12,6 +13,8 @@ const ShopContextProvider = (props) => {
   const [search, setSearch] = useState(""); // Search term
   const [showSearch, setShowSearch] = useState(false); // Toggle for showing search bar
   const [cartItems, setCartItems] = useState([]); // Cart items as an object mapping product IDs to quantities
+
+  const navigate = useNavigate(); // Initialize the navigate function
 
   /**
    * Adds an item to the cart. If the item already exists, increments its quantity.
@@ -69,20 +72,23 @@ const ShopContextProvider = (props) => {
     });
   };
 
-
+  /**
+   * Calculates the total amount of items in the cart.
+   * @returns {number} Total amount.
+   */
   const getCartAmount = () => {
     let totalAmount = 0;
-  
+
     for (const itemId in cartItems) {
       const itemInfo = products.find((product) => product.id === parseInt(itemId));
       if (itemInfo) {
         totalAmount += itemInfo.price * cartItems[itemId];
       }
     }
-  
+
     return totalAmount;
   };
-  
+
   // Context value to be provided to components
   const value = {
     products,
@@ -96,7 +102,8 @@ const ShopContextProvider = (props) => {
     addToCart,
     getCartCount,
     updateCartItem,
-    getCartAmount
+    getCartAmount,
+    navigate, // Now properly defined and included in the context value
   };
 
   return (
