@@ -12,7 +12,6 @@ import PlaceOrder from './Pages/PlaceOrder'
 import Order from './Pages/Order'
 import Collection from './Pages/Collection'
 import './App.css'
-import { ToastContainer, toast } from 'react-toastify';
 import Product from './Pages/Product'
 
 
@@ -20,7 +19,6 @@ const App = () => {
   return (
     <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px[9vw]">
       
-      <ToastContainer />
       <NavBar />
       <SearchBar />
       
