@@ -9,7 +9,7 @@ const Login = ({setToken}) => {
             const onSubmitHandler = async (e) => {
                 e.preventDefault();  //prevent page from refresh 
                 try {
-                const response = await fetch('http://localhost:8080/api/admin', {
+                const response = await fetch('https://backend-project-j7c4.onrender.com/api/admin', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
