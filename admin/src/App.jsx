@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Navbar from './components/Navbar'
 import Sidebar from './components/Sidebar'
-import { Routes, Route} from 'react-router-dom'
+import { Routes, Route, useNavigate} from 'react-router-dom'
 import Add from './pages/add'
 import List from './pages/List'
 import Orders from './pages/Orders'
@@ -10,16 +10,32 @@ import Login from './components/Login'
 
 const App = () => {
   
+    const [token, setToken] = useState(localStorage.getItem('adminToken') ||'');
+    const navigate = useNavigate();
 
-        const [token, setToken] = useState('')
+    useEffect(() => {
+      // Ensure token exists or navigate to login page
+      if (!token) {
+        navigate('/');
+      }
+    }, [token, navigate]);
+  
+    const handleLogout = () => {
+      // Clear token from localStorage and state
+      setToken('');
+      localStorage.removeItem('adminToken');
+  
+      // Navigate back to the login page
+      navigate('/');
+    };
 
 
   return (
     <div className='bg-gray-50 min-h-screen'>
       {token === "" 
-        ? <Login/>
+        ? <Login setToken={setToken}/>
         :  <>
-        <Navbar/> 
+        <Navbar onLogout={handleLogout}/> 
         <hr />
         <div className='flex w-full'>
               <Sidebar/>  
@@ -33,8 +49,8 @@ const App = () => {
               </div>
         </div>
         </>
-       }
-     
+      }
+    
         
     </div>
   )
