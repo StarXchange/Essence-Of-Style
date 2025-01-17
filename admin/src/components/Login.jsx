@@ -21,6 +21,7 @@ const Login = ({setToken}) => {
                     });
                     const data = await response.json();
                     if (response.ok) {
+                        
                         setToken(data.token); // Save token in state
                         localStorage.setItem('adminToken', data.token); // Optional: Store in localStorage
                     } else {
