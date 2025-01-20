@@ -4,25 +4,30 @@ import { ShopContext } from "../context/ShopContext";
 import Star from "../assets/star.png";
 
 const Product = () => {
-  const { productId } = useParams();
+  const { id } = useParams();
   const { products, currency, addToCart } = useContext(ShopContext);
   const [productData, setProductData] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
 
   // Fetch product data based on productId
   useEffect(() => {
-    const fetchProductData = () => {
-      const product = products.find((item) => item.id === Number(productId));
-      if (product) {
-        setProductData(product);
-        setImageUrl(
-          Array.isArray(product.imageUrl) ? product.imageUrl[0] : product.imageUrl
-        );
+    console.log("Product ID:", id);
+
+    const fetchProductData = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/api/single/${id}`);
+        const data = await response.json();
+        console.log(data);
+        if (data) {
+          setProductData(data);
+          setImageUrl(data.images || ""); // Initialize with the first image
+        }
+      } catch (error) {
+        console.error("Error fetching product data:", error);
       }
     };
-
     fetchProductData();
-  }, [productId, products]);
+  }, [id]);
 
   // Loading state if productData is not yet available
   if (!productData) return <div>Loading...</div>;
@@ -53,7 +58,7 @@ const Product = () => {
           {/* Main Image */}
           <div className="mt-4 sm:mt-0 sm:ml-4">
             <img
-              src={imageUrl}
+              src={imageUrl || "fallback-image-url.png"}
               alt={productData.name}
               className="w-full h-auto rounded-lg shadow-md"
             />
@@ -63,15 +68,12 @@ const Product = () => {
 
       {/* Right Side (Details) */}
       <div className="flex flex-col gap-6 w-full sm:max-w-[480px] p-6 rounded-lg shadow-lg">
-        <h1 className="text-2xl font-semibold text-gray-700">{productData.name}</h1>
+        <h1 className="text-2xl font-semibold text-gray-700">
+          {productData.name}
+        </h1>
         <div className="flex items-center gap-2">
           {[...Array(5)].map((_, i) => (
-            <img
-              key={i}
-              src={Star}
-              alt={`Star ${i + 1}`}
-              className="w-4"
-            />
+            <img key={i} src={Star} alt={`Star ${i + 1}`} className="w-4" />
           ))}
           <span className="text-gray-500">(122 reviews)</span>
         </div>
@@ -82,7 +84,7 @@ const Product = () => {
         <p className="text-gray-600">{productData.description}</p>
 
         <button
-          onClick={() => addToCart(productData.id)}
+          onClick={() => addToCart(productData._id || productData.id)}
           className="bg-blue-500 text-white px-8 py-3 rounded-lg shadow-md hover:bg-blue-600 transform hover:scale-105 transition-transform"
         >
           ADD TO CART

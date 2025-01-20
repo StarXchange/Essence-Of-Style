@@ -12,7 +12,7 @@ const Cart = () => {
   // Update cartData whenever cartItems changes
   useEffect(() => {
     const tempData = Object.entries(cartItems).map(([id, quantity]) => {
-      const product = products.find((product) => product.id === Number(id));
+      const product = products.find((product) => product._id === id); // Use _id instead of id
       return product ? { ...product, quantity } : null;
     }).filter(Boolean); // Remove null entries
     setCartData(tempData);
@@ -37,7 +37,7 @@ const Cart = () => {
                 <div className="flex items-start gap-6">
                   <img
                     className="w-16 sm:w-20"
-                    src={item.imageUrl}
+                    src={item.images[0]} // Assuming images is an array
                     alt={item.name}
                   />
                   <div>
@@ -52,17 +52,17 @@ const Cart = () => {
 
                 {/* Quantity Input */}
                 <input
-                  onChangeCapture={(e) => e.target.value === '' || e.target.value === '0' ? null : updateQuantity(item.id, Number(e.target.value))}
+                  onChangeCapture={(e) => e.target.value === '' || e.target.value === '0' ? null : updateQuantity(item._id, Number(e.target.value))}
                   className="border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   type="number"
                   min={1}
                   value={item.quantity}
-                  onChange={(e) => updateCartItem(item.id, Number(e.target.value))}
+                  onChange={(e) => updateCartItem(item._id, Number(e.target.value))} // Use _id instead of id
                 />
 
                 {/* Delete Icon */}
                 <img
-                  onClick={() => updateCartItem(item.id, 0)} // Set quantity to 0 (remove item)
+                  onClick={() => updateCartItem(item._id, 0)} // Set quantity to 0 (remove item)
                   className="w-5 cursor-pointer hover:scale-110 transition-transform"
                   src={bin_icon}
                   alt="Delete"

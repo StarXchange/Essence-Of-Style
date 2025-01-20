@@ -23,11 +23,11 @@ const App = () => {
       <SearchBar />
       
       <Routes>
-        <Route path="/home" element={<Home />} />
+        <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/product/:productId" element={<Product />} />
+        <Route path="/product/:id" element={<Product />} />
         <Route path='/cart' element={<Cart/>} />
         <Route path='place-order' element={<PlaceOrder/>} />
         <Route path='/order' element={<Order/>} />
