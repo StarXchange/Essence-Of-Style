@@ -19,7 +19,7 @@ const Add = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem('adminToken'); 
+    const token = localStorage.getItem('adminToken');  //when working on list i should get my token like this
 
     try {
       const formData = new FormData();
@@ -34,7 +34,7 @@ const Add = () => {
         method: 'POST',
         body: formData,
         headers: {
-          'Authorization': `Bearer ${token}` // Optional if auth is used
+          'Authorization': `Bearer ${token}` // Optional if auth is used     ///and make use of it here when im working on the list
         }
       });
       
