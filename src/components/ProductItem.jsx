@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { ShopContext } from "../context/ShopContext";
-import { Link } from "react-router-dom";
 // import products from "../products";
 
 const ProductItem = ({ id, image, name, price, func }) => {
@@ -25,7 +24,7 @@ const ProductItem = ({ id, image, name, price, func }) => {
         <p className="pt-3 pb-1 text-sm">{name || "Unnamed Product"}</p>
         <p className="text-sm font-medium">
           {currency || "$"}
-          {price?.toFixed(2) || "0.00"}
+          {price || "0.00"}
         </p>
       </div>
   );
