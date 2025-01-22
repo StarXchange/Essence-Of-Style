@@ -115,12 +115,12 @@ const Collection = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filterProducts.map((product) => (
             <ProductItem
-              key={product.id}
+              key={product._id}
               name={product.name}
-              id={product.id}
+              // id={product.id}
               price={product.price}
-              image={[product.imageUrl]} // Wrap imageUrl in an array
-              func={() => singlePage(product.id)}
+              image={[product.images]} // Wrap imageUrl in an array
+              func={() => singlePage(product._id)}
             />
           ))}
         </div>
