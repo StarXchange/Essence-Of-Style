@@ -1,20 +1,36 @@
 import React, { useContext, useState, useEffect } from "react";
-import { ShopContext } from "../context/ShopContext";
+import { ProductContext } from "../context/ProductContext";
+import { CartContext } from "../context/CartContext";
 import Title from "../components/Title";
 import bin_icon from "../assets/bin_icon.png";
 import CartTotal from "../components/CartTotal";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
-  const { products, currency, cartItems, updateCartItem, navigate } = useContext(ShopContext);
+  const { products, currency } = useContext(ProductContext);
+  const { cartItems, clearCart, updateCartItem } = useContext(CartContext);
+  const navigate = useNavigate();
 
   const [cartData, setCartData] = useState([]);
 
-  // Update cartData whenever cartItems changes
   useEffect(() => {
-    const tempData = Object.entries(cartItems).map(([id, quantity]) => {
-      const product = products.find((product) => product._id === id); // Use _id instead of id
-      return product ? { ...product, quantity } : null;
-    }).filter(Boolean); // Remove null entries
+    const tempData = cartItems
+      .map((cartItem) => {
+        const productId =
+          typeof cartItem.productID === "object"
+            ? cartItem.productID._id
+            : cartItem.productID;
+
+        const product = products.find(
+          (product) => product._id === productId
+        );
+
+        return product
+          ? { ...product, quantity: cartItem.quantity }
+          : null;
+      })
+      .filter(Boolean);
+
     setCartData(tempData);
   }, [cartItems, products]);
 
@@ -37,14 +53,17 @@ const Cart = () => {
                 <div className="flex items-start gap-6">
                   <img
                     className="w-16 sm:w-20"
-                    src={item.images[0]} // Assuming images is an array
-                    alt={item.name}
+                    src={item.images?.[0] || "placeholder.png"}
+                    alt={item.name || "Product"}
                   />
                   <div>
-                    <p className="text-xs sm:text-lg font-medium text-gray-800">{item.name}</p>
+                    <p className="text-xs sm:text-lg font-medium text-gray-800">
+                      {item.name || "Unknown Product"}
+                    </p>
                     <div className="flex items-center gap-5 mt-2">
                       <p className="text-xl text-black">
-                        {currency}{item.price}
+                        {currency}
+                        {item.price}
                       </p>
                     </div>
                   </div>
@@ -52,17 +71,18 @@ const Cart = () => {
 
                 {/* Quantity Input */}
                 <input
-                  onChangeCapture={(e) => e.target.value === '' || e.target.value === '0' ? null : updateQuantity(item._id, Number(e.target.value))}
                   className="border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   type="number"
                   min={1}
                   value={item.quantity}
-                  onChange={(e) => updateCartItem(item._id, Number(e.target.value))} // Use _id instead of id
+                  onChange={(e) =>
+                    updateCartItem(item._id, Number(e.target.value))
+                  }
                 />
 
                 {/* Delete Icon */}
                 <img
-                  onClick={() => updateCartItem(item._id, 0)} // Set quantity to 0 (remove item)
+                  onClick={() => clearCart()} // Clear the entire cart
                   className="w-5 cursor-pointer hover:scale-110 transition-transform"
                   src={bin_icon}
                   alt="Delete"
@@ -77,7 +97,7 @@ const Cart = () => {
           <CartTotal />
           <div className="w-full text-right mt-6">
             <button
-              onClick={() => navigate('/place-order')}
+              onClick={() => navigate("/place-order")}
               className="bg-black px-8 py-3 text-white text-lg rounded-md hover:bg-gray-800 transition-colors"
             >
               PROCEED TO CHECKOUT
@@ -90,3 +110,4 @@ const Cart = () => {
 };
 
 export default Cart;
+

@@ -1,23 +1,32 @@
-import React, { useContext, useState, useEffect } from "react";
-import { ShopContext } from "../context/ShopContext";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Title from "./Title";
 import ProductItem from "./ProductItem";
-import { useNavigate } from "react-router-dom";
 
 const BestSeller = () => {
-  const { products } = useContext(ShopContext);
-  const [bestSeller, setBestSeller] = useState([]);
-  const navigate = useNavigate();
+  const [bestSeller, setBestSeller] = useState([]); // State to hold bestseller products
+  const navigate = useNavigate(); // Hook for navigation
 
+  // Fetch bestseller products from backend
   useEffect(() => {
-    if (Array.isArray(products)) {
-      const bestProducts = products.filter((product) => product.bestseller);
-      setBestSeller(bestProducts.slice(0, 5));
+    async function fetchBestSellers() {
+      try {
+        const response = await fetch("http://localhost:8080/api/bestselling "); // Adjust URL to match your backend route
+        if (!response.ok) {
+          throw new Error("Failed to fetch bestseller products");
+        }
+        const data = await response.json();
+        setBestSeller(data.products.slice(0, 5)); // Limit to top 5 products
+      } catch (error) {
+        console.error("Error fetching bestseller products:", error.message);
+      }
     }
-  }, [products]);
+
+    fetchBestSellers();
+  }, []);
 
   const singlePage = (productId) => {
-    navigate(`/product/${productId}`);
+    navigate(`/product/${productId}`); // Navigate to single product page
   };
 
   return (
@@ -26,8 +35,7 @@ const BestSeller = () => {
       <div className="text-center py-8 px-4 bg-white rounded-lg shadow-md">
         <Title text1="BEST" text2="SELLER" />
         <p className="mt-4 text-sm sm:text-base text-gray-600">
-          Discover our best-selling products loved by our customers! These
-          handpicked items are must-haves for your collection.
+          Discover our best-selling products loved by our customers! These handpicked items are must-haves for your collection.
         </p>
       </div>
 
@@ -41,11 +49,11 @@ const BestSeller = () => {
           bestSeller.map((product, index) => (
             <ProductItem
               key={index}
-              id={product.id}
+              id={product._id}
               name={product.name}
               price={product.price}
-              image={[product.imageUrl]}
-              func={() => singlePage(product.id)}
+              image={product.images}
+              func={() => singlePage(product._id)}
             />
           ))
         )}
