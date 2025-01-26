@@ -1,12 +1,13 @@
+
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ShopContext } from "../context/ShopContext";
+import { ProductContext } from "../context/ProductContext"; // Use ProductContext for managing products and search
 import dropdown from "../assets/dropdown-icon.png";
 import Title from "../components/Title";
 import ProductItem from "../components/ProductItem";
 
 const Collection = () => {
-  const { products, search, showSearch } = useContext(ShopContext);
+  const { products, search, showSearch } = useContext(ProductContext); // Correct context here
   const [showFilter, setShowFilter] = useState(false);
   const [filterProducts, setFilterProducts] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -65,9 +66,7 @@ const Collection = () => {
         >
           FILTERS
           <img
-            className={`h-4 transition-transform ${
-              showFilter ? "rotate-90" : ""
-            }`}
+            className={`h-4 transition-transform ${showFilter ? "rotate-90" : ""}`}
             src={dropdown}
             alt="dropdown"
           />
@@ -117,7 +116,6 @@ const Collection = () => {
             <ProductItem
               key={product._id}
               name={product.name}
-              // id={product.id}
               price={product.price}
               image={[product.images]} // Wrap imageUrl in an array
               func={() => singlePage(product._id)}

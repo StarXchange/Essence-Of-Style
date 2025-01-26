@@ -1,12 +1,11 @@
 import React, { useEffect, useContext, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { ShopContext } from "../context/ShopContext"; // Import ShopContext for useContext
+import { ProductContext } from "../context/ProductContext"; // Use ProductContext for search and setSearch
 import Search from "../assets/search.png";
 import Close from "../assets/close.png";
 
 const SearchBar = () => {
-  const { search, setSearch, showSearch, setShowSearch } =
-    useContext(ShopContext);
+  const { search, setSearch, showSearch, setShowSearch } = useContext(ProductContext); // Use ProductContext
   const [visible, setVisible] = useState(false);
   const location = useLocation();
 
@@ -25,7 +24,7 @@ const SearchBar = () => {
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className=" flex-1 outline-none bg-inherit text-sm"
+          className="flex-1 outline-none bg-inherit text-sm"
           type="text"
           placeholder="Search"
           aria-label="Search products"
