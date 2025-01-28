@@ -55,7 +55,7 @@ const NavBar = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <Link to="/home" className="flex items-center gap-2">
-              <img src={Logo} alt="Logo" className="w-10 h-10" />
+              <img src="https://res.cloudinary.com/dcmkvti63/image/upload/v1738076211/Logo_mwrnbl.png" alt="Logo" className="w-10 h-10" />
               <p className="text-xl font-bold text-gray-800">Essence Of Style</p>
             </Link>
           </div>
