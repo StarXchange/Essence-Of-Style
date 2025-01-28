@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
-import { ShopContext } from '../context/ShopContext';
+import { ProductContext } from '../context/ProductContext';
 import Title from '../components/Title';
 
 const Order = () => {
-  const { products, currency } = useContext(ShopContext);
+  const { products, currency } = useContext(ProductContext);
 
   return (
     <div className="border-t pt-16 bg-gradient-to-r from-blue-50 to-blue-100 min-h-screen">
@@ -22,7 +22,7 @@ const Order = () => {
             <div className="flex items-start gap-6">
               <img
                 className="w-16 sm:w-20 rounded-lg object-cover"
-                src={item.imageUrl}
+                src={item.images}
                 alt={item.name}
               />
               <div className="flex flex-col">

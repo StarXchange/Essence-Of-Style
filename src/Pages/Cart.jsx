@@ -8,7 +8,8 @@ import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const { products, currency } = useContext(ProductContext);
-  const { cartItems, clearCart, updateCartItem } = useContext(CartContext);
+  const { cartItems, clearCart, updateCartItem, removeFromCart } =
+    useContext(CartContext);
   const navigate = useNavigate();
 
   const [cartData, setCartData] = useState([]);
@@ -21,13 +22,9 @@ const Cart = () => {
             ? cartItem.productID._id
             : cartItem.productID;
 
-        const product = products.find(
-          (product) => product._id === productId
-        );
+        const product = products.find((product) => product._id === productId);
 
-        return product
-          ? { ...product, quantity: cartItem.quantity }
-          : null;
+        return product ? { ...product, quantity: cartItem.quantity } : null;
       })
       .filter(Boolean);
 
@@ -82,7 +79,7 @@ const Cart = () => {
 
                 {/* Delete Icon */}
                 <img
-                  onClick={() => clearCart()} // Clear the entire cart
+                  onClick={() => removeFromCart(item._id)}
                   className="w-5 cursor-pointer hover:scale-110 transition-transform"
                   src={bin_icon}
                   alt="Delete"
@@ -110,4 +107,3 @@ const Cart = () => {
 };
 
 export default Cart;
-
