@@ -15,7 +15,6 @@ function Home() {
         <BestSeller/>
         <OurPolicy />
         <NewsletterBox />
-        {/* <Products /> */}
       </div>
     );
   }

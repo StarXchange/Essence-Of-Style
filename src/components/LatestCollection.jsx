@@ -1,21 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { ShopContext } from "../context/ShopContext";
+import { ProductContext } from "../context/ProductContext"; // Import the new ProductContext
 import Title from "./Title";
 import ProductItem from "./ProductItem";
 import { Link } from "react-router-dom";
 
 const LatestCollection = () => {
-  const { products } = useContext(ShopContext); // Accessing products from context
-  const [latestProducts, setLatestProducts] = useState([]); // State for latest products
+  const { products } = useContext(ProductContext); // Get products from ProductContext
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (products && products.length > 0) {
-      setLatestProducts(products.slice(0, 10)); // Safely slicing the products array
-    }
-  }, [products]); // Add products as a dependency
-
+  // Function to navigate to single product page
   const singlePage = (productId) => {
     navigate(`/product/${productId}`);
   };
@@ -36,16 +30,20 @@ const LatestCollection = () => {
 
       {/* Product Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 px-4">
-        {latestProducts.map((product) => (
-          <ProductItem
-            key={product.id}
-            id={product.id}
-            image={[product.imageUrl]} // Pass directly if `imageUrl` is a string
-            name={product.name}
-            price={product.price}
-            func={() => singlePage(product.id)}
-          />
-        ))}
+        {products.length > 0 ? (
+          products.map((product) => (
+            <ProductItem
+              key={product._id} // Use _id as the key, assuming that's the unique identifier
+              id={product._id}
+              image={product.images ? [product.images] : []} // Ensure this is an array
+              name={product.name}
+              price={product.price}
+              func={() => singlePage(product._id)} // Navigate to the product page
+            />
+          ))
+        ) : (
+          <p>No products found.</p> // Display message when no products are fetched
+        )}
       </div>
     </div>
   );

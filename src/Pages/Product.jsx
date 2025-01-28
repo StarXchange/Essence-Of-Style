@@ -1,31 +1,31 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { ShopContext } from "../context/ShopContext";
+import { ProductContext } from "../context/ProductContext";
+import { CartContext } from "../context/CartContext";
 import Star from "../assets/star.png";
 
 const Product = () => {
   const { id } = useParams();
-  const { products, currency, addToCart } = useContext(ShopContext);
+  const { currency } = useContext(ProductContext); // Access currency from ProductContext
+  const { addToCart } = useContext(CartContext); // Access addToCart from CartContext
   const [productData, setProductData] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
 
-  // Fetch product data based on productId
+  // Fetch product data based on product ID
   useEffect(() => {
-    console.log("Product ID:", id);
-
     const fetchProductData = async () => {
       try {
         const response = await fetch(`http://localhost:8080/api/single/${id}`);
         const data = await response.json();
-        console.log(data);
         if (data) {
           setProductData(data);
-          setImageUrl(data.images || ""); // Initialize with the first image
+          setImageUrl(data.images?.[0] || ""); // Initialize with the first image
         }
       } catch (error) {
         console.error("Error fetching product data:", error);
       }
     };
+
     fetchProductData();
   }, [id]);
 
@@ -39,8 +39,8 @@ const Product = () => {
         <div className="flex flex-col sm:flex-row">
           {/* Thumbnails */}
           <div className="flex sm:flex-col overflow-x-auto sm:overflow-y-auto gap-3">
-            {Array.isArray(productData.imageUrl) &&
-              productData.imageUrl.map((item, index) => (
+            {Array.isArray(productData.images) &&
+              productData.images.map((item, index) => (
                 <img
                   key={index}
                   src={item}

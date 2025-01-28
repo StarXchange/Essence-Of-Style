@@ -1,14 +1,18 @@
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
-import ShopContextProvider from './context/ShopContext';  // Corrected import for default export
+import ProductContextProvider from './context/ProductContext'; // Import ProductContextProvider
+import CartContextProvider from './context/CartContext'; // Import CartContextProvider
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>
-    <ShopContextProvider>
-      <App />
-    </ShopContextProvider>
+    <ProductContextProvider>
+      <CartContextProvider>
+        <App />
+      </CartContextProvider>
+    </ProductContextProvider>
   </BrowserRouter>
 );

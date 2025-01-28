@@ -14,7 +14,6 @@ import Collection from './Pages/Collection'
 import './App.css'
 import Product from './Pages/Product'
 
-
 const App = () => {
   return (
     <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px[9vw]">
@@ -23,7 +22,8 @@ const App = () => {
       <SearchBar />
       
       <Routes>
-        <Route path="/" element={<Home />} />
+
+        <Route path="/" element={<Home />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
@@ -35,7 +35,6 @@ const App = () => {
 
       </Routes>
   
-
       <Footer /> 
     </div>
   )
