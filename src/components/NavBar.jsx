@@ -2,12 +2,12 @@ import React, { useState, useContext } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Logo from "../assets/logo.png";
+// import Logo from "../assets/logo.png";
 import search from "../assets/search.png";
 import user from "../assets/user.png";
 import cart from "../assets/shopping-cart.png";
 import menu from "../assets/menu.png";
-import dropdown from "../assets/dropdown-icon.png";
+// import dropdown from "../assets/dropdown-icon.png";
 import { CartContext } from "../context/CartContext";
 import { ProductContext } from "../context/ProductContext";
 
