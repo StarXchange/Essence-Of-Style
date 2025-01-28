@@ -1,41 +1,44 @@
+
+
 import React, { createContext, useState, useEffect } from "react";
 
-// Create a context for the cart
 export const CartContext = createContext();
 
 const CartContextProvider = ({ children }) => {
-  const delivery_fee = 10; // Flat delivery fee
-  const [cartItems, setCartItems] = useState([]); // Cart items array
-  const [cartTotal, setCartTotal] = useState(0); // Cart total amount
-  const [products, setProducts] = useState([]); // Products list
-  const [cartData, setCartData] = useState([]); // Merged cart data with product details
+  const delivery_fee = 10;
+  const [cartItems, setCartItems] = useState([]);
+  const [cartTotal, setCartTotal] = useState(0);
+  const [products, setProducts] = useState([]);
+  const [cartData, setCartData] = useState([]);
 
   // Fetch cart items from the backend
-  useEffect(() => {
-    const fetchCart = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/api/cart/items", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`, // Fix string interpolation
-          },
-        });
+  const fetchCart = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/api/cart/items", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch cart items");
-        }
-
-        const responseData = await response.json();
-        const cartData = responseData?.data || {};
-
-        setCartItems(cartData.items || []); // Default to empty array
-        setCartTotal(cartData.total || 0); // Default to 0
-      } catch (error) {
-        console.error("Error fetching cart:", error.message);
+      if (!response.ok) {
+        throw new Error("Failed to fetch cart items");
       }
-    };
 
+      const responseData = await response.json();
+      const cartData = responseData?.data || {};
+
+      setCartItems(cartData.items || []);
+      setCartTotal(cartData.total || 0);
+      return cartData;
+    } catch (error) {
+      console.error("Error fetching cart:", error.message);
+      return null;
+    }
+  };
+
+  useEffect(() => {
     fetchCart();
   }, []);
 
@@ -55,7 +58,7 @@ const CartContextProvider = ({ children }) => {
         }
 
         const productsData = await response.json();
-        setProducts(productsData.products || []); // Default to empty array
+        setProducts(productsData.products || []);
       } catch (error) {
         console.error("Error fetching products:", error.message);
       }
@@ -66,16 +69,16 @@ const CartContextProvider = ({ children }) => {
 
   // Update cartData whenever cartItems or products changes
   useEffect(() => {
-    setCartData(
-      (cartItems || []) // Ensure cartItems is at least an empty array
-        .map((cartItem) => {
-          const product = (products || []).find(
-            (product) => product._id === cartItem.productID
-          );
-          return product ? { ...product, quantity: cartItem.quantity } : null;
-        })
-        .filter(Boolean) // Remove null values
-    );
+    const updatedCartData = cartItems
+      .map((cartItem) => {
+        const product = products.find(
+          (product) => product._id === cartItem.productID
+        );
+        return product ? { ...product, quantity: cartItem.quantity } : null;
+      })
+      .filter(Boolean);
+    
+    setCartData(updatedCartData);
   }, [cartItems, products]);
 
   const addToCart = async (productID, quantity = 1) => {
@@ -84,7 +87,7 @@ const CartContextProvider = ({ children }) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // Fix string interpolation
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify({ productID, quantity }),
       });
@@ -94,81 +97,145 @@ const CartContextProvider = ({ children }) => {
       }
 
       const data = await response.json();
-      setCartItems(data.items || []); // Default to empty array
-      setCartTotal(data.total || 0); // Default to 0
+      
+      // Immediately update local state
+      setCartItems(data.items || []);
+      setCartTotal(data.total || 0);
+      
+      // Fetch fresh cart data
+      await fetchCart();
     } catch (error) {
       console.error("Error adding item to cart:", error.message);
     }
   };
 
-  // Remove item from cart
-  const removeFromCart = async (productID) => {
-    try {
-      const response = await fetch("http://localhost:8080/api/cart/remove", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // Fix string interpolation
-        },
-        body: JSON.stringify({ productID }),
-      });
-
-      const data = await response.json();
-      setCartItems(data.items || []); // Default to empty array
-      setCartTotal(data.total || 0); // Default to 0
-    } catch (error) {
-      console.error("Error removing item from cart:", error.message);
-    }
-  };
-
-  // Update item quantity in cart
   const updateCartItem = async (productID, quantity) => {
     try {
+      // Optimistically update the UI
+      const updatedItems = cartItems.map(item => 
+        item.productID === productID ? { ...item, quantity } : item
+      );
+      setCartItems(updatedItems);
+
       const response = await fetch("http://localhost:8080/api/cart/update", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // Fix string interpolation
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify({ productID, quantity }),
       });
 
       const data = await response.json();
-      setCartItems(data.items || []); // Default to empty array
-      setCartTotal(data.total || 0); // Default to 0
+      
+      // Update with server response
+      setCartItems(data.items || []);
+      setCartTotal(data.total || 0);
+      
+      // Fetch fresh cart data
+      await fetchCart();
     } catch (error) {
       console.error("Error updating cart item:", error.message);
+      // Revert optimistic update on error
+      await fetchCart();
     }
   };
 
-  // Clear cart
+//   const removeFromCart = async (productID) => {
+//     try {
+//       // Optimistically update the UI
+//       const updatedItems = cartItems.filter(item => item.productID !== productID);
+//       setCartItems(updatedItems);
+
+//       const response = await fetch("http://localhost:8080/api/cart/remove", {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `Bearer ${localStorage.getItem("token")}`,
+//         },
+//         body: JSON.stringify({ productID }),
+//       });
+
+//       const data = await response.json();
+//       setCartItems(data.items || []);
+//       setCartTotal(data.total || 0);
+      
+//       // Fetch fresh cart data
+//       await fetchCart();
+//     } catch (error) {
+//       console.error("Error removing item from cart:", error.message);
+//       // Revert optimistic update on error
+//       await fetchCart();
+//     }
+//   };
+const removeFromCart = async (productID) => {
+    try {
+      // Optimistically update the UI
+      const updatedItems = cartItems.filter(item => 
+        item.productID.toString() !== productID.toString()
+      );
+      setCartItems(updatedItems);
+
+      const response = await fetch("http://localhost:8080/api/cart/remove", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ productID }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to remove item from cart");
+      }
+
+      const data = await response.json();
+      
+      if (data.success) {
+        setCartItems(data.data.items || []);
+        setCartTotal(data.data.total || 0);
+      } else {
+        throw new Error(data.message);
+      }
+      
+      // Fetch fresh cart data
+      await fetchCart();
+    } catch (error) {
+      console.error("Error removing item from cart:", error.message);
+      // Revert optimistic update on error
+      await fetchCart();
+    }
+  };
+
   const clearCart = async () => {
     try {
+      // Optimistically clear the cart
+      setCartItems([]);
+      setCartTotal(0);
+
       const response = await fetch("http://localhost:8080/api/cart/clear", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // Fix string interpolation
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
 
       const data = await response.json();
-      setCartItems(data.items || []); // Default to empty array
-      setCartTotal(data.total || 0); // Default to 0
+      setCartItems(data.items || []);
+      setCartTotal(data.total || 0);
     } catch (error) {
       console.error("Error clearing cart:", error.message);
+      // Revert optimistic update on error
+      await fetchCart();
     }
   };
 
-  // Get the total number of items in the cart
   const getCartCount = () => {
-    return (cartItems || []).reduce(
-      (total, item) => total + (item.quantity || 0),
-      0
-    );
+    // return cartItems.reduce((total, item) => total + (item.quantity || 0), 0);
+    return cartItems.length;
   };
 
-  // Context value to provide
   const value = {
     cartItems,
     cartData,
@@ -179,14 +246,13 @@ const CartContextProvider = ({ children }) => {
     updateCartItem,
     clearCart,
     getCartCount,
-};
+  };
 
-return (
+  return (
     <CartContext.Provider value={value}>
-      {children} {/* Render all children components wrapped by this provider */}
+      {children}
     </CartContext.Provider>
-);
+  );
 };
 
 export default CartContextProvider;
-

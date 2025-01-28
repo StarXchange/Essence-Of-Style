@@ -19,16 +19,25 @@ const NavBar = () => {
 
   const handleLogout = async () => {
     try {
+      const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
+      if (!token) {
+        toast.error("No token found. Please log in.");
+        return;
+      }
+  
       const response = await fetch("http://localhost:8080/api/logoutUser", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Add the token here
         },
       });
-
+  
       const data = await response.json();
-
+  
       if (response.ok && data.success) {
+        // Clear the token from localStorage
+        localStorage.removeItem("token");
         toast.success("Logged out successfully!");
         navigate("/login");
       } else {
@@ -80,14 +89,14 @@ const NavBar = () => {
               />
               <div className="absolute right-0 mt-2 hidden group-hover:block bg-white border rounded-md shadow-lg">
                 <ul className="py-2">
-                  {["Profile"].map((item) => (
+                  <Link to="/login">
                     <li
-                      key={item}
+                      key="Login"
                       className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                     >
-                      {item}
+                      Login
                     </li>
-                  ))}
+                  </Link>
                   <Link to="/order">
                     <li
                       key="Order"
@@ -133,4 +142,3 @@ const NavBar = () => {
 };
 
 export default NavBar;
-

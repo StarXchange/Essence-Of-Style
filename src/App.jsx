@@ -14,7 +14,6 @@ import Collection from './Pages/Collection'
 import './App.css'
 import Product from './Pages/Product'
 
-
 const App = () => {
   return (
     <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px[9vw]">
@@ -35,7 +34,6 @@ const App = () => {
 
       </Routes>
   
-
       <Footer /> 
     </div>
   )
