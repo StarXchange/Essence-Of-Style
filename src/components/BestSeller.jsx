@@ -11,7 +11,7 @@ const BestSeller = () => {
   useEffect(() => {
     async function fetchBestSellers() {
       try {
-        const response = await fetch("http://localhost:8080/api/bestselling "); // Adjust URL to match your backend route
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/bestselling`); // Adjust URL to match your backend route
         if (!response.ok) {
           throw new Error("Failed to fetch bestseller products");
         }
