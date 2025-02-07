@@ -120,9 +120,9 @@ const Cart = () => {
   const { products, currency } = useContext(ProductContext);
   const { cartItems, clearCart, updateCartItem, removeFromCart } =
     useContext(CartContext);
-  const navigate = useNavigate();
 
   const [cartData, setCartData] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const tempData = cartItems
@@ -141,14 +141,12 @@ const Cart = () => {
     setCartData(tempData);
   }, [cartItems, products]);
 
-  const handleProceedToCheckout = () => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      // Redirect to login page if not authenticated
-      navigate("/login");
+  const handleCheckout = () => {
+    const token = localStorage.getItem("token"); // Check for token
+    if (token) {
+      navigate("/place-order"); // Navigate to the place order page
     } else {
-      // Proceed to checkout if authenticated
-      navigate("/place-order");
+      navigate("/login"); // Navigate to the login page if no token
     }
   };
 
@@ -215,7 +213,7 @@ const Cart = () => {
           <CartTotal />
           <div className="w-full text-right mt-6">
             <button
-              onClick={handleProceedToCheckout}
+              onClick={handleCheckout}
               className="bg-black px-8 py-3 text-white text-lg rounded-md hover:bg-gray-800 transition-colors"
             >
               PROCEED TO CHECKOUT
