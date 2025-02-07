@@ -18,7 +18,7 @@ const List = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/list");
+      const response = await fetch("http://localhost:8080/api/products");
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -94,7 +94,7 @@ const List = () => {
             </div>
             <div>{product.name}</div>
             <div>{product.category}</div>
-            <div>${product.price}</div>
+            <div>₦{product.price}</div>
             <div className="text-center">
               <button className="bg-blue-500 text-white px-2 py-1 rounded mr-2">
                 Edit

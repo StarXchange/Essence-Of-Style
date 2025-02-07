@@ -19,7 +19,7 @@ const Product = () => {
         const data = await response.json();
         if (data) {
           setProductData(data);
-          setImageUrl(data.images?.[0] || ""); // Initialize with the first image
+          setImageUrl(data.images?.[0] || "");
         }
       } catch (error) {
         console.error("Error fetching product data:", error);
