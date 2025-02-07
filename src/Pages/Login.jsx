@@ -19,8 +19,8 @@ const Login = () => {
     try {
       const endpoint =
         currentState === "Sign Up"
-          ? "http://localhost:8080/api/register"
-          : "http://localhost:8080/api/login";
+          ? `${import.meta.env.VITE_API_BASE_URL}/register`
+          : `${import.meta.env.VITE_API_BASE_URL}/login`;
 
       const body =
         currentState === "Sign Up"

@@ -16,7 +16,7 @@ const Collection = () => {
   };
 
   return (
-    <div className="flex flex-col sm:flex-row justify-between gap-6 pt-10 sm:pt-14 min-h-[80vh] border-t bg-gradient-to-r from-blue-50 to-blue-400">
+    <div className="flex flex-col sm:flex-row justify-between gap-6 pt-10 sm:pt-14 min-h-[80vh] border-t ">
       {/* Filter Options */}
       <div className="w-full sm:max-w-[320px] p-6 shadow-lg">
         <p

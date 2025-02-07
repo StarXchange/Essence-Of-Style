@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProductContext } from "../context/ProductContext"; // Import the new ProductContext
 import Title from "./Title";
@@ -6,6 +6,8 @@ import ProductItem from "./ProductItem";
 import { Link } from "react-router-dom";
 
 const LatestCollection = () => {
+ 
+
   const { products } = useContext(ProductContext); // Get products from ProductContext
   const navigate = useNavigate();
 
@@ -15,7 +17,7 @@ const LatestCollection = () => {
   };
 
   return (
-    <div className="flex flex-col gap-6 pt-10 sm:pt-14 min-h-[80vh] bg-gradient-to-r from-blue-50 to-blue-400">
+    <div className="flex flex-col gap-6 pt-10 sm:pt-14 min-h-[80vh]">
       {/* Title Section */}
       <div className="text-center py-8 px-4 bg-white rounded-lg shadow-md">
         <Link to="/collection">
