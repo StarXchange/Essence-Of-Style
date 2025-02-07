@@ -15,11 +15,11 @@ const Product = () => {
   useEffect(() => {
     const fetchProductData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/single/${id}`);
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/single/${id}`);
         const data = await response.json();
         if (data) {
           setProductData(data);
-          setImageUrl(data.images?.[0] || ""); // Initialize with the first image
+          setImageUrl(data.images?.[0] || "");
         }
       } catch (error) {
         console.error("Error fetching product data:", error);

@@ -3,7 +3,7 @@ import image1 from "../assets/image1.png";
 
 const Hero = () => {
   return (
-    <div className="flex flex-col sm:flex-row items-center min-h-[30vh] bg-gradient-to-r from-blue-50 to-blue-400 rounded-lg shadow-md overflow-hidden">
+    <div className="flex flex-col sm:flex-row items-center min-h-[30vh] shadow-md overflow-hidden">
       {/* Hero Left Side */}
       <div className="w-full sm:w-1/2 flex items-center justify-center py-6 sm:py-0 px-4">
         <div className="text-[#414141] text-center sm:text-left">

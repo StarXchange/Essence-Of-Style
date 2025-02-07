@@ -5,7 +5,7 @@ import customer from "../assets/customer.png";
 
 const OurPolicy = () => {
   return (
-    <div className="flex flex-col gap-8 pt-10 sm:pt-14 min-h-[50vh] bg-gradient-to-r from-blue-50 to-blue-400">
+    <div className="flex flex-col gap-8 pt-10 sm:pt-14 min-h-[50vh] p-3 bg-gradient-to-r from-blue-50 to-blue-400">
       {/* Title Section */}
       <div className="text-center py-8 px-4 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">
@@ -18,7 +18,7 @@ const OurPolicy = () => {
       </div>
 
       {/* Policies Section */}
-      <div className="flex flex-col sm:flex-row justify-around gap-12 sm:gap-4 text-center px-4">
+      <div className="flex flex-col sm:flex-row justify-around gap-12 sm:gap-4 text-center">
         {/* Policy 1 */}
         <div className="bg-white p-6 rounded-lg shadow-md hover:scale-105">
           <img src={exchanging} className="w-16 m-auto mb-4" alt="Exchanging Policy" />
