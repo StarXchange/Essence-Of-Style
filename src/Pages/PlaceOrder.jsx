@@ -1,11 +1,67 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import CartTotal from '../components/CartTotal';
 import Title from '../components/Title';
 import visa from '../assets/visa.png';
 import mastercard from '../assets/mastercard.png';
 
 const PlaceOrder = () => {
+  const navigate = useNavigate();
+
   const [method, setMethod] = useState('cod');
+
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    address: '',
+    city: '',
+    state: '',
+    zip: '',
+    country: '',
+    phone: '',
+    paymentMethod: '',
+  });
+
+  const handleInputChange = (e) => {
+      setFormData({
+        ...formData,
+        [e.target.name]: e.target.value,
+      });
+  };
+
+  const handlePlaceOrder = async () => {
+    try {
+      
+      const orderData = {
+        userid: '',
+        items: [],
+        amount: '',
+        address: `${formData.address}, ${formData.city}, ${formData.state}, ${formData.zip}, ${formData.country}`,
+        phone: formData.phone,
+        paymentMethod: method === 'cod' ? 'Cash': method,
+      }
+
+      const response = await fetch ('http://localhost:8080/api/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      if(response.ok){
+        navigate('/orders');
+      }else{
+        const error =await response.json();
+        console.error('Error placing order:', error.message);
+      }
+
+
+    } catch (error) {
+      console.error('Error placing order:', error.message);
+    }
+  };
 
   return (
     <div className="flex flex-col sm:flex-row justify-between gap-6 pt-5 sm:pt-14 min-h-[80vh] border-t bg-gradient-to-r from-blue-50 to-blue-400">
@@ -19,54 +75,90 @@ const PlaceOrder = () => {
         <div className="flex flex-col gap-4">
           <div className="flex gap-3">
             <input
+            name='firstName'
+            value={formData.firstName}
+            onChange={handleInputChange}
               className="border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
               type="text"
               placeholder="First Name"
+              required
             />
             <input
+            name='lastName'
+            value={formData.lastName}
+            onChange={handleInputChange}
               className="border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
               type="text"
               placeholder="Last Name"
+              required
             />
           </div>
           <input
+            name='email'
+            value={formData.email}
+            onChange={handleInputChange}
             className="border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-            type="text"
+            type="email"
             placeholder="Email Address"
+            required
           />
           <input
+            name='address'
+            value={formData.address}
+            onChange={handleInputChange}
             className="border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
             type="text"
             placeholder="Home Address"
+            required
           />
           <div className="flex gap-3">
             <input
+              name='city'
+              value={formData.city}
+              onChange={handleInputChange}
               className="border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
               type="text"
               placeholder="City"
+              required
             />
             <input
+              name='state'
+              value={formData.state}
+              onChange={handleInputChange}
               className="border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
               type="text"
               placeholder="State"
+              required
             />
           </div>
           <div className="flex gap-3">
             <input
+              name='zip'
+              value={formData.zip}
+              onChange={handleInputChange}
               className="border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-              type="number"
+              type="text"
               placeholder="Zipcode"
+              required
             />
             <input
+              name='country'
+              value={formData.country}
+              onChange={handleInputChange}
               className="border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
               type="text"
               placeholder="Country"
+              required
             />
           </div>
           <input
+            name='phone'
+            value={formData.phone}
+            onChange={handleInputChange}
             className="border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-            type="number"
+            type="text"
             placeholder="Phone"
+            required
           />
         </div>
       </div>
@@ -119,7 +211,7 @@ const PlaceOrder = () => {
           </div>
           <div className='w-full text-end mt-3 flex justify-end'>
   <button
-    onClick={() => navigate('/orders')}
+    onClick={handlePlaceOrder}
     className='text-black px-8 py-2 text-sm bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 transition-all transform hover:scale-105'
   >
     <b>PLACE ORDER</b>
