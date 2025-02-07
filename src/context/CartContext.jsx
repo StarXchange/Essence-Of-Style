@@ -231,7 +231,7 @@ import React, { createContext, useState, useEffect } from "react";
 export const CartContext = createContext();
 
 const CartContextProvider = ({ children }) => {
-  const delivery_fee = 10;
+  const delivery_fee = 1000;
   const [cartItems, setCartItems] = useState([]);
   const [cartTotal, setCartTotal] = useState(0);
   const [products, setProducts] = useState([]);
@@ -240,7 +240,7 @@ const CartContextProvider = ({ children }) => {
   // Fetch cart items from the backend
   const fetchCart = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/cart/items", {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/cart/items`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
